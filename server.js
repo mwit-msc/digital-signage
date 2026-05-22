@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 
 // gzip all responses (must run before static so assets are compressed).
-// Shrinks the bundled Tailwind CSS from ~2.9 MB to ~280 KB on the wire.
+// Shrinks the bundled Tailwind CSS from ~2.9 MB to ~300 KB on the wire.
 app.use(compression());
 
 // Static assets with caching (1 day for CSS/JS/images, 1 hour for HTML)
