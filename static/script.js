@@ -671,6 +671,13 @@
         // Check for seasonal theme change daily (in case page is open across months)
         setInterval(applySeasonalTheme, 24 * 60 * 60 * 1000);
 
+        // Reload the page every hour. The signage runs unattended for months;
+        // a periodic reload recovers from browser memory leaks and picks up
+        // any deployed updates. Assets are cached, so the reload is cheap.
+        setInterval(function() {
+            window.location.reload();
+        }, 60 * 60 * 1000);
+
         // console.log('initialized successfully');
     }
 
