@@ -194,7 +194,6 @@ body.winter-theme .winter-only {
     -webkit-align-items: flex-start;
     -ms-flex-align: start;
     align-items: flex-start;
-    gap: 12px;
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -208,6 +207,7 @@ body.winter-theme .winter-only {
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
     margin-top: 2px;
+    margin-right: 12px; /* replaces flex `gap` - unsupported on webOS Chromium 79 */
     /* Invert to white for visibility on colored backgrounds */
     filter: brightness(0) saturate(100%) invert(1);
     -webkit-filter: brightness(0) saturate(100%) invert(1);
@@ -236,12 +236,12 @@ body.winter-theme .winter-only {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    gap: 8px;
 }
 
 .qr-container img {
     width: 112px;
     height: 112px;
+    margin-bottom: 8px; /* replaces flex `gap` - unsupported on webOS Chromium 79 */
 }
 
 .qr-label {
@@ -289,7 +289,6 @@ body.winter-theme .winter-only {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    gap: 12px;
     background: rgba(59, 130, 246, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
@@ -344,7 +343,11 @@ body.winter-theme .winter-bg-overlay {
 .winter-bg-overlay {
     display: none;
     position: fixed;
-    inset: 0;
+    /* longhand instead of `inset` shorthand - unsupported on webOS Chromium 79 */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: linear-gradient(180deg,
         rgba(15, 23, 42, 0.3) 0%,
         rgba(30, 41, 59, 0.2) 50%,
@@ -733,4 +736,60 @@ svg {
 .bg-gradient-to-br.from-blue-500 svg {
     filter: brightness(0) saturate(100%) invert(1);
     -webkit-filter: brightness(0) saturate(100%) invert(1) !important;
+}
+
+/* ========================================
+   webOS / CHROMIUM 79 COMPATIBILITY ADDITIONS
+   (LG webOS Signage 6.0 / 6.1 ships Chromium 79)
+   ======================================== */
+
+/* Background overlay gradients. Replaces Tailwind 3 slash-opacity gradient
+   classes (from-blue-900/30 etc.) which do not exist in the self-hosted
+   Tailwind 2.2.19 build. */
+.overlay-gradient-cool {
+    background: linear-gradient(135deg,
+        rgba(30, 58, 138, 0.30) 0%,
+        transparent 50%,
+        rgba(88, 28, 135, 0.20) 100%);
+}
+
+.overlay-gradient-sheen {
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.30) 0%,
+        transparent 50%,
+        rgba(0, 0, 0, 0.10) 100%);
+}
+
+/* Opacity utility classes used in markup but absent from Tailwind 2.2.19.
+   The `color/opacity` slash syntax was introduced in Tailwind 3. */
+.bg-black\/20 { background-color: rgba(0, 0, 0, 0.20); }
+.bg-black\/40 { background-color: rgba(0, 0, 0, 0.40); }
+.bg-white\/95 { background-color: rgba(255, 255, 255, 0.95); }
+.text-white\/80 { color: rgba(255, 255, 255, 0.80); }
+.text-white\/90 { color: rgba(255, 255, 255, 0.90); }
+.text-white\/95 { color: rgba(255, 255, 255, 0.95); }
+
+/* weather-alert icon spacing - replaces flex `gap` (unsupported on Chromium 79) */
+.weather-alert #alert-icon {
+    margin-right: 12px;
+}
+
+/* ----------------------------------------
+   FHD signage panels (LG 55UL3J-NP is 1920x1080).
+   The 4K block above (min-width: 2560px) never fires on a 1080p panel,
+   so trim the 4K-tuned type/spacing to fit a Full HD screen.
+   On a true 4K panel none of these rules apply.
+   ---------------------------------------- */
+@media (max-width: 2559px) {
+    .text-10xl { font-size: 7.5rem !important; }
+    .text-8xl  { font-size: 6rem !important; }
+}
+
+@media (max-height: 1140px) {
+    /* Shrink vertical padding so both cards fit a 1080p-tall viewport */
+    .pt-32 { padding-top: 5rem !important; }
+    .pb-40 { padding-bottom: 7rem !important; }
+    .text-10xl { font-size: 7rem !important; }
+    .text-8xl  { font-size: 5.5rem !important; }
+    header.p-10 { padding: 1.75rem !important; }
 }

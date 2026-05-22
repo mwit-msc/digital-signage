@@ -13,17 +13,15 @@
     <meta name="description" content="ระบบแสดงคุณภาพอากาศสำหรับ MWIT Digital Signage System">
     <meta name="author" content="Student Committee">
 
-    <!-- Google Fonts for Thai language support -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Self-hosted IBM Plex Sans Thai (no external font CDN - works offline) -->
+    <link rel="stylesheet" href="vendor/fonts.css">
 
-    <!-- Tailwind CSS via CDN with compatibility for Chrome 49 -->
-    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Self-hosted Tailwind CSS 2.2.19 (no CDN) -->
+    <link rel="stylesheet" href="vendor/tailwind.min.css">
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Twemoji for consistent emoji rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js"></script>
+    <!-- Self-hosted Twemoji for consistent emoji rendering (no CDN) -->
+    <script src="vendor/twemoji.min.js"></script>
 </head>
 <body>
     <div class="w-screen h-screen overflow-hidden relative">
@@ -36,7 +34,7 @@
                 class="w-full h-full object-cover object-center"
                 id="bg-image"
             />
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/20"></div>
+            <div class="absolute inset-0 overlay-gradient-cool"></div>
             <div class="absolute inset-0 bg-black/20"></div>
         </div>
 
@@ -83,7 +81,7 @@
 
                     <!-- Subtle pattern overlay -->
                     <div class="absolute inset-0 opacity-20">
-                        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 via-transparent to-black/10"></div>
+                        <div class="absolute top-0 left-0 w-full h-full overlay-gradient-sheen"></div>
                     </div>
 
                     <!-- Decorative snowflakes (visible only in winter) -->

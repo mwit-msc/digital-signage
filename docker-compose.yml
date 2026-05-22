@@ -1,0 +1,12 @@
+services:
+  digital-signage:
+    build: .
+    container_name: digital-signage
+    # Keep the signage running 24/7 - survives crashes and host reboots
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000

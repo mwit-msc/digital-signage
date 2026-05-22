@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 
 require('dotenv').config();
 
@@ -7,6 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+
+// gzip all responses (must run before static so assets are compressed).
+// Shrinks the bundled Tailwind CSS from ~2.9 MB to ~280 KB on the wire.
+app.use(compression());
 
 // Static assets with caching (1 day for CSS/JS/images, 1 hour for HTML)
 app.use(express.static('static', {
@@ -76,10 +81,8 @@ async function fetchAirQualityData() {
 
     try {
         const response = await fetch(salayaUrl.toString(), {
-            headers: {
-                'Cache-Control': 'no-store'
-            },
-            timeout: 30000
+            headers: { 'Cache-Control': 'no-store' },
+            signal: AbortSignal.timeout(15000)
         });
 
         if (!response.ok) {
@@ -105,10 +108,8 @@ async function fetchAirQualityData() {
 
         try {
             const fallbackResponse = await fetch(nakhonPathomUrl.toString(), {
-                headers: {
-                    'Cache-Control': 'no-store'
-                },
-                timeout: 30000
+                headers: { 'Cache-Control': 'no-store' },
+                signal: AbortSignal.timeout(15000)
             });
 
             if (!fallbackResponse.ok) {
@@ -234,7 +235,7 @@ async function fetchWeatherData() {
     try {
         const response = await fetch(url.toString(), {
             headers: { 'Cache-Control': 'no-store' },
-            timeout: 15000
+            signal: AbortSignal.timeout(15000)
         });
 
         if (!response.ok) {

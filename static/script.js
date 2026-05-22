@@ -109,12 +109,14 @@
     // TWEMOJI HELPER
     // ========================================
 
-    // Helper function to convert emoji to Twemoji images
+    // Helper function to convert emoji to Twemoji images.
+    // Uses self-hosted SVG assets (static/vendor/twemoji/svg) - no CDN required.
     function parseEmoji(element) {
         if (typeof twemoji !== 'undefined' && element) {
             twemoji.parse(element, {
-                folder: 'svg',
-                ext: '.svg'
+                callback: function(icon) {
+                    return 'vendor/twemoji/svg/' + icon + '.svg';
+                }
             });
         }
     }
